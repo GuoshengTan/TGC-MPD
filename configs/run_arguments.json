@@ -1,0 +1,441 @@
+[
+  {
+    "args": {
+      "features": [
+        "data\\processed\\eval_settings\\random2000\\scoped_balanced.csv",
+        "data\\processed\\eval_settings\\random2000\\hard_case.csv"
+      ],
+      "out_dir": "runs\\confucross\\random2000_v1",
+      "random_state": 42,
+      "test_size": 0.2,
+      "val_size": 0.1,
+      "epochs": 160,
+      "patience": 24,
+      "batch_size": 128,
+      "hidden_dim": 128,
+      "group_dim": 32,
+      "cross_layers": 3,
+      "dropout": 0.25,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "device": "cuda"
+    },
+    "run": "runs/confucross/random2000_v1"
+  },
+  {
+    "args": {
+      "features": [
+        "data/processed/eval_settings/random2000/scoped_balanced.csv",
+        "data/processed/eval_settings/random2000/hard_case.csv"
+      ],
+      "out_dir": "runs\\confucross\\smoke_test",
+      "random_state": 42,
+      "test_size": 0.2,
+      "val_size": 0.1,
+      "epochs": 2,
+      "patience": 1,
+      "batch_size": 256,
+      "hidden_dim": 128,
+      "group_dim": 32,
+      "cross_layers": 3,
+      "dropout": 0.25,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "device": "cuda"
+    },
+    "run": "runs/confucross/smoke_test"
+  },
+  {
+    "args": {
+      "features": [
+        "data/processed/eval_settings/random2000/scoped_balanced.csv",
+        "data/processed/eval_settings/random2000/hard_case.csv"
+      ],
+      "out_dir": "runs\\treecross\\package_name_grouped_20261012\\seed_40",
+      "random_state": 40,
+      "test_size": 0.2,
+      "val_size": 0.1,
+      "split_mode": "package_name",
+      "epochs": 160,
+      "patience": 24,
+      "batch_size": 128,
+      "hidden_dim": 128,
+      "leaf_dim": 8,
+      "dropout": 0.2,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "rf_trees": 400,
+      "blend_step": 0.05,
+      "model_family": "TGC-MPD-package-name-grouped",
+      "device": "cuda"
+    },
+    "run": "runs/treecross/package_name_grouped_20261012/seed_40"
+  },
+  {
+    "args": {
+      "features": [
+        "data/processed/eval_settings/random2000/scoped_balanced.csv",
+        "data/processed/eval_settings/random2000/hard_case.csv"
+      ],
+      "out_dir": "runs\\treecross\\package_name_grouped_20261012\\seed_41",
+      "random_state": 41,
+      "test_size": 0.2,
+      "val_size": 0.1,
+      "split_mode": "package_name",
+      "epochs": 160,
+      "patience": 24,
+      "batch_size": 128,
+      "hidden_dim": 128,
+      "leaf_dim": 8,
+      "dropout": 0.2,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "rf_trees": 400,
+      "blend_step": 0.05,
+      "model_family": "TGC-MPD-package-name-grouped",
+      "device": "cuda"
+    },
+    "run": "runs/treecross/package_name_grouped_20261012/seed_41"
+  },
+  {
+    "args": {
+      "features": [
+        "data/processed/eval_settings/random2000/scoped_balanced.csv",
+        "data/processed/eval_settings/random2000/hard_case.csv"
+      ],
+      "out_dir": "runs\\treecross\\package_name_grouped_20261012\\seed_42",
+      "random_state": 42,
+      "test_size": 0.2,
+      "val_size": 0.1,
+      "split_mode": "package_name",
+      "epochs": 160,
+      "patience": 24,
+      "batch_size": 128,
+      "hidden_dim": 128,
+      "leaf_dim": 8,
+      "dropout": 0.2,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "rf_trees": 400,
+      "blend_step": 0.05,
+      "model_family": "TGC-MPD-package-name-grouped",
+      "device": "cuda"
+    },
+    "run": "runs/treecross/package_name_grouped_20261012/seed_42"
+  },
+  {
+    "args": {
+      "features": [
+        "data\\processed\\eval_settings\\random2000\\scoped_balanced.csv",
+        "data\\processed\\eval_settings\\random2000\\hard_case.csv"
+      ],
+      "out_dir": "runs\\treecross\\random2000_v1",
+      "random_state": 42,
+      "test_size": 0.2,
+      "val_size": 0.1,
+      "epochs": 160,
+      "patience": 24,
+      "batch_size": 128,
+      "hidden_dim": 128,
+      "leaf_dim": 8,
+      "dropout": 0.2,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "rf_trees": 160,
+      "device": "cuda"
+    },
+    "run": "runs/treecross/random2000_v1"
+  },
+  {
+    "args": {
+      "features": [
+        "data\\processed\\eval_settings\\random2000\\scoped_balanced.csv",
+        "data\\processed\\eval_settings\\random2000\\hard_case.csv"
+      ],
+      "out_dir": "runs\\treecross\\random2000_v2",
+      "random_state": 42,
+      "test_size": 0.2,
+      "val_size": 0.1,
+      "epochs": 160,
+      "patience": 24,
+      "batch_size": 128,
+      "hidden_dim": 128,
+      "leaf_dim": 8,
+      "dropout": 0.2,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "rf_trees": 400,
+      "blend_step": 0.05,
+      "device": "cuda"
+    },
+    "run": "runs/treecross/random2000_v2"
+  },
+  {
+    "args": {
+      "features": [
+        "data\\processed\\eval_settings\\random2000\\scoped_balanced.csv",
+        "data\\processed\\eval_settings\\random2000\\hard_case.csv"
+      ],
+      "out_dir": "runs\\treecross\\random2000_v2_multiseed\\seed_40",
+      "random_state": 40,
+      "test_size": 0.2,
+      "val_size": 0.1,
+      "epochs": 160,
+      "patience": 24,
+      "batch_size": 128,
+      "hidden_dim": 128,
+      "leaf_dim": 8,
+      "dropout": 0.2,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "rf_trees": 400,
+      "blend_step": 0.05,
+      "model_family": "TreeCross-MPD v2",
+      "device": "cuda"
+    },
+    "run": "runs/treecross/random2000_v2_multiseed/seed_40"
+  },
+  {
+    "args": {
+      "features": [
+        "data\\processed\\eval_settings\\random2000\\scoped_balanced.csv",
+        "data\\processed\\eval_settings\\random2000\\hard_case.csv"
+      ],
+      "out_dir": "runs\\treecross\\random2000_v2_multiseed\\seed_41",
+      "random_state": 41,
+      "test_size": 0.2,
+      "val_size": 0.1,
+      "epochs": 160,
+      "patience": 24,
+      "batch_size": 128,
+      "hidden_dim": 128,
+      "leaf_dim": 8,
+      "dropout": 0.2,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "rf_trees": 400,
+      "blend_step": 0.05,
+      "model_family": "TreeCross-MPD v2",
+      "device": "cuda"
+    },
+    "run": "runs/treecross/random2000_v2_multiseed/seed_41"
+  },
+  {
+    "args": {
+      "features": [
+        "data\\processed\\eval_settings\\random2000\\scoped_balanced.csv",
+        "data\\processed\\eval_settings\\random2000\\hard_case.csv"
+      ],
+      "out_dir": "runs\\treecross\\random2000_v2_multiseed\\seed_42",
+      "random_state": 42,
+      "test_size": 0.2,
+      "val_size": 0.1,
+      "epochs": 160,
+      "patience": 24,
+      "batch_size": 128,
+      "hidden_dim": 128,
+      "leaf_dim": 8,
+      "dropout": 0.2,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "rf_trees": 400,
+      "blend_step": 0.05,
+      "model_family": "TreeCross-MPD v2",
+      "device": "cuda"
+    },
+    "run": "runs/treecross/random2000_v2_multiseed/seed_42"
+  },
+  {
+    "args": {
+      "features": [
+        "data\\processed\\eval_settings\\random2000\\scoped_balanced.csv",
+        "data\\processed\\eval_settings\\random2000\\hard_case.csv"
+      ],
+      "out_dir": "runs\\treecross\\random2000_v3",
+      "random_state": 42,
+      "test_size": 0.2,
+      "val_size": 0.1,
+      "epochs": 160,
+      "patience": 24,
+      "batch_size": 128,
+      "hidden_dim": 128,
+      "leaf_dim": 8,
+      "dropout": 0.2,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "rf_trees": 400,
+      "blend_step": 0.05,
+      "model_family": "TreeCross-MPD-v3",
+      "device": "cuda"
+    },
+    "run": "runs/treecross/random2000_v3"
+  },
+  {
+    "args": {
+      "features": [
+        "data\\processed\\eval_settings\\random2000\\scoped_balanced.csv",
+        "data\\processed\\eval_settings\\random2000\\hard_case.csv"
+      ],
+      "out_dir": "runs\\treecross\\random2000_v3_multiseed\\seed_40",
+      "random_state": 40,
+      "test_size": 0.2,
+      "val_size": 0.1,
+      "epochs": 160,
+      "patience": 24,
+      "batch_size": 128,
+      "hidden_dim": 128,
+      "leaf_dim": 8,
+      "dropout": 0.2,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "rf_trees": 400,
+      "blend_step": 0.05,
+      "model_family": "TreeCross-MPD-v3",
+      "device": "cuda"
+    },
+    "run": "runs/treecross/random2000_v3_multiseed/seed_40"
+  },
+  {
+    "args": {
+      "features": [
+        "data\\processed\\eval_settings\\random2000\\scoped_balanced.csv",
+        "data\\processed\\eval_settings\\random2000\\hard_case.csv"
+      ],
+      "out_dir": "runs\\treecross\\random2000_v3_multiseed\\seed_41",
+      "random_state": 41,
+      "test_size": 0.2,
+      "val_size": 0.1,
+      "epochs": 160,
+      "patience": 24,
+      "batch_size": 128,
+      "hidden_dim": 128,
+      "leaf_dim": 8,
+      "dropout": 0.2,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "rf_trees": 400,
+      "blend_step": 0.05,
+      "model_family": "TreeCross-MPD-v3",
+      "device": "cuda"
+    },
+    "run": "runs/treecross/random2000_v3_multiseed/seed_41"
+  },
+  {
+    "args": {
+      "features": [
+        "data\\processed\\eval_settings\\random2000\\scoped_balanced.csv",
+        "data\\processed\\eval_settings\\random2000\\hard_case.csv"
+      ],
+      "out_dir": "runs\\treecross\\random2000_v3_multiseed\\seed_42",
+      "random_state": 42,
+      "test_size": 0.2,
+      "val_size": 0.1,
+      "epochs": 160,
+      "patience": 24,
+      "batch_size": 128,
+      "hidden_dim": 128,
+      "leaf_dim": 8,
+      "dropout": 0.2,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "rf_trees": 400,
+      "blend_step": 0.05,
+      "model_family": "TreeCross-MPD-v3",
+      "device": "cuda"
+    },
+    "run": "runs/treecross/random2000_v3_multiseed/seed_42"
+  },
+  {
+    "args": {
+      "features": [
+        "data\\processed\\eval_settings\\random2000\\hard_case.csv"
+      ],
+      "out_dir": "runs\\treecross\\smoke_multiseed\\seed_42",
+      "random_state": 42,
+      "test_size": 0.2,
+      "val_size": 0.1,
+      "epochs": 2,
+      "patience": 1,
+      "batch_size": 256,
+      "hidden_dim": 128,
+      "leaf_dim": 8,
+      "dropout": 0.2,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "rf_trees": 32,
+      "blend_step": 0.05,
+      "model_family": "TreeCross-MPD v2",
+      "device": "cuda"
+    },
+    "run": "runs/treecross/smoke_multiseed/seed_42"
+  },
+  {
+    "args": {
+      "features": [
+        "data\\processed\\eval_settings\\random2000\\hard_case.csv"
+      ],
+      "out_dir": "runs\\treecross\\smoke_test",
+      "random_state": 42,
+      "test_size": 0.2,
+      "val_size": 0.1,
+      "epochs": 2,
+      "patience": 1,
+      "batch_size": 256,
+      "hidden_dim": 128,
+      "leaf_dim": 8,
+      "dropout": 0.2,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "rf_trees": 32,
+      "device": "cuda"
+    },
+    "run": "runs/treecross/smoke_test"
+  },
+  {
+    "args": {
+      "features": [
+        "data\\processed\\eval_settings\\random2000\\hard_case.csv"
+      ],
+      "out_dir": "runs\\treecross\\smoke_test_v2",
+      "random_state": 42,
+      "test_size": 0.2,
+      "val_size": 0.1,
+      "epochs": 2,
+      "patience": 1,
+      "batch_size": 256,
+      "hidden_dim": 128,
+      "leaf_dim": 8,
+      "dropout": 0.2,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "rf_trees": 32,
+      "blend_step": 0.05,
+      "device": "cuda"
+    },
+    "run": "runs/treecross/smoke_test_v2"
+  },
+  {
+    "args": {
+      "features": [
+        "data\\processed\\eval_settings\\random2000\\hard_case.csv"
+      ],
+      "out_dir": "runs\\treecross\\smoke_test_v3",
+      "random_state": 42,
+      "test_size": 0.2,
+      "val_size": 0.1,
+      "epochs": 2,
+      "patience": 1,
+      "batch_size": 256,
+      "hidden_dim": 128,
+      "leaf_dim": 8,
+      "dropout": 0.2,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "rf_trees": 32,
+      "blend_step": 0.05,
+      "model_family": "TreeCross-MPD v3",
+      "device": "cuda"
+    },
+    "run": "runs/treecross/smoke_test_v3"
+  }
+]

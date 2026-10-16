@@ -1,99 +1,55 @@
 # TGC-MPD
 
-Tree-Guided Confidence-Preserved Correction for hard-case malicious npm package detection.
+Tree-Guided Confidence-Preserved Correction for Hard-Case Malicious npm Package Detection.
 
-This repository contains the implementation used for the paper:
+This repository contains research code and experiment parameter records, not the manuscript or datasets.
 
-> TGC-MPD: Tree-Guided Confidence-Preserved Correction for Hard-Case Malicious npm Package Detection
+TGC-MPD combines an HGB teacher with a neural correction branch. Its confidence gate preserves teacher **scores** outside the uncertain region; the validation-selected classification threshold can still change labels. The current implementation evaluates both branches before selecting scores, and is not a conditional-compute implementation.
 
-TGC-MPD targets suspicious hard cases where benign and malicious npm packages share overlapping static risk signals. The method keeps high-confidence predictions from a strong HGB teacher and applies a neural TreeCross correction branch only when the teacher is uncertain.
+## Contents
 
-## Repository Contents
+- `scripts/`: all 16 project scripts for data indexing, feature construction, baseline and neural training, multi-seed evaluation, tool baselines, analysis, benchmarking, and figure generation.
+- `tests/`: package-name grouped split regression tests.
+- `configs/run_arguments.json`: arguments recorded by 18 historical runs, including ConfuCross, TreeCross v1/v2/v3, multi-seed, grouped, and smoke runs.
+- `configs/validation_selected_parameters.json`: feature lists and validation-selected thresholds, epochs, blend coefficients, and confidence margins from those runs.
+- `configs/README.md`: reproduction details and limitations.
 
-- `scripts/build_feature_table.py`: extracts static package-level risk features.
-- `scripts/build_eval_settings.py`: builds scoped-balanced and hard-case evaluation settings.
-- `scripts/train_baselines.py`: trains LR, RF, HGB, and MLP baselines.
-- `scripts/train_treecross.py`: trains TreeCross/TGC-MPD variants.
-- `scripts/run_baselines_multiseed.py`: runs baseline experiments over multiple random seeds.
-- `scripts/run_treecross_multiseed.py`: runs TGC-MPD experiments over multiple random seeds.
-- `scripts/evaluate_tool_baselines.py`: evaluates tool-output baselines when NPMStudy tool outputs are available.
-- `scripts/build_paper_assets.py`: builds tables and case-study artifacts for the paper.
-- `scripts/make_paper_figures.py`: regenerates paper figures.
-- `cscloud2026_latex/`: LaTeX source for the CSCloud 2026 submission draft.
-
-## Data Notice
-
-The original NPMStudy archives, downloaded npm package archives, malicious package artifacts, and generated experiment outputs are not included in this repository. Users should obtain datasets from their original sources and follow the corresponding redistribution and safety policies.
-
-Expected local data paths include:
-
-```text
-data/raw/
-data/processed/
-runs/
-paper_assets/
-```
-
-These directories are intentionally excluded from version control.
-
-## Environment
-
-Install the Python dependencies with:
+## Setup
 
 ```bash
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
+python -m unittest discover -s tests -v
 ```
 
-The experiments use Python with pandas, NumPy, scikit-learn, and PyTorch. GPU execution is optional but recommended for TreeCross experiments.
+Install a PyTorch build appropriate for your hardware. The dependency ranges are not an exact historical environment lock.
 
-## Typical Workflow
+## Data Preparation
 
-Build feature tables:
+Obtain NPMStudy data from its original source and reconstruct benign package archives under the paths expected by the scripts. Inspect each data script's `--help` before use. Downloaded package versions may become unavailable. No raw archives or feature tables are distributed here.
 
 ```bash
-python scripts/build_feature_table.py \
-  --benign-manifest data/processed/npmstudy_index/benign_registry_random2000_manifest.csv \
-  --out-csv data/processed/features/base_feature_table_random2000.csv
+python scripts/build_feature_table.py --benign-manifest data/processed/npmstudy_index/benign_registry_random2000_manifest.csv --out-csv data/processed/features/base_feature_table_random2000.csv
+python scripts/build_eval_settings.py --features data/processed/features/base_feature_table_random2000.csv --out-dir data/processed/eval_settings/random2000 --n-per-class 1800
 ```
 
-Build evaluation settings:
+## Main Experiments
+
+The manuscript's main multi-seed configuration corresponds to `random2000_v2_multiseed`, not the later v3 experiment directory. Historical labels are run labels, not switches selecting different source-code versions.
 
 ```bash
-python scripts/build_eval_settings.py \
-  --features data/processed/features/base_feature_table_random2000.csv \
-  --out-dir data/processed/eval_settings/random2000 \
-  --n-per-class 1800
+python scripts/run_baselines_multiseed.py --seeds 40 41 42 --out-dir runs/baselines/random2000_multiseed --permutation-repeats 3
+python scripts/run_treecross_multiseed.py --seeds 40 41 42 --split-mode package_version --out-dir runs/treecross/random2000_v2_multiseed --epochs 160 --patience 24 --batch-size 128 --rf-trees 400 --blend-step 0.05 --model-family "TreeCross-MPD v2" --device cuda
+python scripts/run_treecross_multiseed.py --seeds 40 41 42 --split-mode package_name --out-dir runs/treecross/package_name_grouped_20261012 --epochs 160 --patience 24 --batch-size 128 --rf-trees 400 --blend-step 0.05 --model-family TGC-MPD-package-name-grouped --device cuda
 ```
 
-Run baselines:
+Both runners default to the scoped-balanced and hard-case feature tables generated above. Use `--device cpu` for neural training without CUDA. Keep the two split protocols separate when interpreting results.
 
-```bash
-python scripts/run_baselines_multiseed.py \
-  --seeds 40 41 42 \
-  --features data/processed/eval_settings/random2000/scoped_balanced.csv data/processed/eval_settings/random2000/hard_case.csv \
-  --out-dir runs/baselines/random2000_multiseed \
-  --permutation-repeats 3
-```
+## Auxiliary Scripts
 
-Run TGC-MPD:
+`benchmark_treecross_cost.py` uses a frozen v3 seed-42 hard-case split. Run its `prepare` mode before `hgb_cpu`, `full_cpu`, or `full_cuda`. It requires local training outputs; its output directory is currently hard-coded under `cscloud2026_latex/revision_20261012/performance`.
 
-```bash
-python scripts/run_treecross_multiseed.py \
-  --seeds 40 41 42 \
-  --features data/processed/eval_settings/random2000/scoped_balanced.csv data/processed/eval_settings/random2000/hard_case.csv \
-  --out-dir runs/treecross/random2000_v3_multiseed \
-  --epochs 160 \
-  --patience 24 \
-  --batch-size 128 \
-  --rf-trees 400 \
-  --blend-step 0.05 \
-  --model-family TreeCross-MPD-v3 \
-  --device cuda
-```
+Analysis and figure scripts also expect locally generated experiment outputs, and some use historical hard-coded paths. They are included as research code, not standalone tools that can run without those inputs.
 
-Use `--device cpu` if CUDA is unavailable.
+## Safety and Scope
 
-## Safety
-
-This project is intended for defensive research on malicious package detection. Do not upload or redistribute active malicious package payloads, downloaded package archives, private dataset copies, or credentials.
-
+Use isolated environments when handling malicious-package archives; do not install or execute their payloads. This upload excludes datasets, package archives, trained binary checkpoints, paper/LaTeX/PDF files, submission records, personal materials, and credentials.

@@ -26,6 +26,7 @@ def parse_args():
     parser.add_argument("--blend-step", type=float, default=0.05)
     parser.add_argument("--model-family", default="TreeCross-MPD v2")
     parser.add_argument("--device", default="cuda")
+    parser.add_argument("--split-mode", choices=["package_version", "package_name"], default="package_version")
     parser.add_argument("--skip-existing", action="store_true")
     return parser.parse_args()
 
@@ -59,6 +60,8 @@ def run_seed(seed, args, seed_dir):
         args.model_family,
         "--device",
         args.device,
+        "--split-mode",
+        args.split_mode,
     ]
     print(f"[seed={seed}] running: {' '.join(cmd)}")
     subprocess.run(cmd, check=True)
@@ -95,6 +98,7 @@ def aggregate(args, out_dir):
 
     payload = {
         "seeds": args.seeds,
+        "split_mode": args.split_mode,
         "features": args.features,
         "out_dir": str(out_dir),
         "all_metrics": str(out_dir / "all_metrics.csv"),
@@ -117,3 +121,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

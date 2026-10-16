@@ -16,7 +16,7 @@ from sklearn.metrics import (
     recall_score,
     roc_auc_score,
 )
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import StratifiedGroupKFold, train_test_split
 from sklearn.preprocessing import StandardScaler
 from torch import nn
 from torch.utils.data import DataLoader, TensorDataset
@@ -50,6 +50,7 @@ def parse_args():
     parser.add_argument("--random-state", type=int, default=42)
     parser.add_argument("--test-size", type=float, default=0.2)
     parser.add_argument("--val-size", type=float, default=0.1)
+    parser.add_argument("--split-mode", choices=["package_version", "package_name"], default="package_version")
     parser.add_argument("--epochs", type=int, default=160)
     parser.add_argument("--patience", type=int, default=24)
     parser.add_argument("--batch-size", type=int, default=128)
@@ -95,6 +96,25 @@ def split_data(df, random_state, test_size, val_size):
         random_state=random_state,
     )
     return train.reset_index(drop=True), val.reset_index(drop=True), test.reset_index(drop=True)
+
+
+def split_by_package_name(df, random_state, test_size, val_size):
+    if not np.isclose(test_size, 0.2) or not np.isclose(val_size, 0.1):
+        raise ValueError("Package-name protocol uses fixed approximate 70/10/20 proportions.")
+    if df["package_name"].isna().any() or df["package_name"].astype(str).str.strip().eq("").any():
+        raise ValueError("Every row must have a package name for grouped evaluation.")
+    groups = df["package_name"].astype(str)
+    splitter = StratifiedGroupKFold(n_splits=10, shuffle=True, random_state=random_state)
+    folds = [held_out for _, held_out in splitter.split(df, df["label"], groups)]
+    test_ids = np.concatenate(folds[:2])
+    val_ids = folds[2]
+    train_ids = np.concatenate(folds[3:])
+    partitions = [df.iloc[ids].reset_index(drop=True) for ids in (train_ids, val_ids, test_ids)]
+    names = [set(part["package_name"]) for part in partitions]
+    assert not (names[0] & names[1] or names[0] & names[2] or names[1] & names[2])
+    assert len(set(np.concatenate((train_ids, val_ids, test_ids)))) == len(df)
+    assert all(part["label"].nunique() == 2 for part in partitions)
+    return tuple(partitions)
 
 
 def best_threshold(y_true, y_score):
@@ -375,7 +395,16 @@ def run_setting(feature_path, args, device, out_dir):
     df = df.sample(frac=1.0, random_state=args.random_state).reset_index(drop=True)
     columns = feature_columns(df)
 
-    train, val, test = split_data(df, args.random_state, args.test_size, args.val_size)
+    split_function = split_by_package_name if args.split_mode == "package_name" else split_data
+    train, val, test = split_function(df, args.random_state, args.test_size, args.val_size)
+    package_sets = {name: set(frame["package_name"]) for name, frame in [("train", train), ("val", val), ("test", test)]}
+    split_audit = {
+        "mode": args.split_mode,
+        "protocol": "SGKF10: folds 0/1 test, fold 2 validation, folds 3--9 training" if args.split_mode == "package_name" else "stratified package-version split",
+        "splits": {name: {"rows": len(frame), "package_names": frame["package_name"].nunique(), "class_counts": {str(k): int(v) for k, v in frame["label"].value_counts().items()}} for name, frame in [("train", train), ("val", val), ("test", test)]},
+        "overlap_names": {f"{left}_{right}": sorted(package_sets[left] & package_sets[right]) for left, right in [("train", "val"), ("train", "test"), ("val", "test")]},
+    }
+    (setting_out / "split_audit.json").write_text(json.dumps(split_audit, indent=2), encoding="utf-8")
     for split_name, split_df in [("train", train), ("val", val), ("test", test)]:
         split_df.to_csv(setting_out / f"{split_name}.csv", index=False)
 
@@ -543,6 +572,7 @@ def run_setting(feature_path, args, device, out_dir):
 
     return {
         "setting": setting_name,
+        "split_mode": args.split_mode,
         "feature_source": feature_path,
         "rows": int(len(df)),
         "class_counts": {str(k): int(v) for k, v in df["label"].value_counts().sort_index().items()},
@@ -588,3 +618,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

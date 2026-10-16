@@ -238,7 +238,7 @@ def make_f1_comparison():
 
     # Panel a: hard-case ranking, which is the main robustness claim.
     order = np.argsort(hard)
-    ordered_methods = [methods[i] for i in order]
+    ordered_methods = [methods[i] + (" (ref.)" if methods[i] in {"GuardDog", "SAP-XGB"} else "") for i in order]
     ordered_hard = hard[order]
     ordered_std = hard_std[order]
     y = np.arange(len(ordered_methods))
@@ -249,12 +249,12 @@ def make_f1_comparison():
         if np.isfinite(s):
             axes[0].errorbar(v, i, xerr=s, fmt="none", ecolor=PALETTE["ink"], elinewidth=0.8, capsize=2.2)
         label_color = PALETTE["blue"] if m == "TGC-MPD" else PALETTE["ink"]
-        axes[0].text(v + 0.0025, i, f"{v:.3f}", va="center", ha="left", fontsize=6.5, color=label_color)
+        axes[0].text(v + 0.0025, i + 0.28, f"{v:.3f}", va="bottom", ha="left", fontsize=6.5, color=label_color)
     axes[0].set_yticks(y)
     axes[0].set_yticklabels(ordered_methods, fontsize=6.8)
-    axes[0].set_xlim(0.84, 0.965)
+    axes[0].set_xlim(0.84, 0.970)
     axes[0].set_xlabel("F1 score", fontsize=7)
-    axes[0].set_title("Hard-case robustness", fontsize=8, fontweight="bold", pad=6)
+    axes[0].set_title("Hard-case detection", fontsize=8, fontweight="bold", pad=6)
     axes[0].grid(axis="x", color=PALETTE["grid"], linewidth=0.6)
     axes[0].set_axisbelow(True)
     axes[0].tick_params(axis="both", labelsize=6.5, length=0)
@@ -277,7 +277,7 @@ def make_f1_comparison():
     axes[1].set_xticks(x)
     axes[1].set_xticklabels(settings, fontsize=6.8)
     axes[1].set_ylabel("F1 difference vs HGB", fontsize=7)
-    axes[1].set_title("Targeted gain, not universal dominance", fontsize=8, fontweight="bold", pad=6)
+    axes[1].set_title("F1 difference from HGB", fontsize=8, fontweight="bold", pad=6)
     axes[1].set_ylim(-0.008, 0.010)
     axes[1].grid(axis="y", color=PALETTE["grid"], linewidth=0.6)
     axes[1].set_axisbelow(True)
@@ -286,16 +286,7 @@ def make_f1_comparison():
     axes[1].spines["bottom"].set_color("#AAB0BA")
     axes[1].text(-0.18, 1.05, "b", transform=axes[1].transAxes, fontsize=9, fontweight="bold")
 
-    fig.text(
-        0.5,
-        0.012,
-        "TGC-MPD is designed for hard suspicious cases; it improves the hard-case setting while remaining below HGB on the scoped-balanced setting.",
-        ha="center",
-        va="bottom",
-        fontsize=6.2,
-        color=PALETTE["muted"],
-    )
-    fig.tight_layout(rect=[0, 0.055, 1, 1])
+    fig.tight_layout(rect=[0, 0.02, 1, 1])
     save_all(fig, "fig2_main_f1_comparison")
     plt.close(fig)
 
@@ -316,3 +307,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
