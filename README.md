@@ -2,12 +2,32 @@
 
 Tree-Guided Confidence-Preserved Correction for Hard-Case Malicious npm Package Detection.
 
-This repository contains research code and experiment parameter records, not the manuscript or datasets.
+This repository contains the paper PDF, research code, and experiment parameter records. Datasets are not distributed.
 
 TGC-MPD combines an HGB teacher with a neural correction branch. Its confidence gate preserves teacher **scores** outside the uncertain region; the validation-selected classification threshold can still change labels. The current implementation evaluates both branches before selecting scores, and is not a conditional-compute implementation.
 
+## Paper
+
+**TGC-MPD: Tree-Guided Confidence-Preserved Correction for Hard-Case Malicious npm Package Detection**
+
+Guosheng Tan, Yuhao Feng, Yuxuan Zhou, Jiahui Li, Yiming Geng, and Ling Lu.
+
+Accepted at the 2026 IEEE 13th International Conference on Cyber Security and Cloud Computing (CSCloud).
+
+[Read the paper (PDF)](paper/TGC-MPD.pdf) | [Download PDF](https://github.com/GuoshengTan/TGC-MPD/raw/refs/heads/main/paper/TGC-MPD.pdf)
+
+The seven-page PDF is the PDF eXpress-validated submission copy, not an IEEE Xplore version of record. The original downloaded filename was `2026380451.pdf`; it is published here without modifying its contents.
+
+### Overview
+
+The TreeCross branch combines static package features, teacher risk priors, and RF leaf embeddings. A validation-selected confidence gate chooses between the HGB teacher score and the correction score.
+
+Across three seeds under the package-version protocol, mean hard-case F1 increases from 0.9458 to 0.9535 and recall from 0.9310 to 0.9487 relative to fixed-threshold HGB. The hard-case F1 gain is not observed under package-name-grouped testing, which evaluates transfer to unseen package names.
+
 ## Contents
 
+
+- `paper/TGC-MPD.pdf`: the seven-page paper submission copy.
 - `scripts/`: all 16 project scripts for data indexing, feature construction, baseline and neural training, multi-seed evaluation, tool baselines, analysis, benchmarking, and figure generation.
 - `tests/`: package-name grouped split regression tests.
 - `configs/run_arguments.json`: arguments recorded by 18 historical runs, including ConfuCross, TreeCross v1/v2/v3, multi-seed, grouped, and smoke runs.
@@ -52,4 +72,4 @@ Analysis and figure scripts also expect locally generated experiment outputs, an
 
 ## Safety and Scope
 
-Use isolated environments when handling malicious-package archives; do not install or execute their payloads. This upload excludes datasets, package archives, trained binary checkpoints, paper/LaTeX/PDF files, submission records, personal materials, and credentials.
+Use isolated environments when handling malicious-package archives; do not install or execute their payloads. This upload excludes datasets, package archives, trained binary checkpoints, LaTeX sources, administrative submission records, private personal materials, and credentials. The paper PDF is the sole explicitly included manuscript artifact.

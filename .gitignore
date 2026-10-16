@@ -14,6 +14,7 @@ cscloud2026_latex/
 github_upload/
 .matplotlib_cache/
 *.pdf
+!paper/TGC-MPD.pdf
 *.tex
 *.zip
 *.tgz
@@ -26,3 +27,5 @@ github_upload/
 *.joblib
 *.npy
 *.npz
+
+
