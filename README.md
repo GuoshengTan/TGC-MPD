@@ -16,7 +16,7 @@ Accepted at the 2026 IEEE 13th International Conference on Cyber Security and Cl
 
 [Read the paper (PDF)](paper/TGC-MPD.pdf) | [Download PDF](https://github.com/GuoshengTan/TGC-MPD/raw/refs/heads/main/paper/TGC-MPD.pdf)
 
-The seven-page PDF is the PDF eXpress-validated submission copy, not an IEEE Xplore version of record. The original downloaded filename was `2026380451.pdf`; it is published here without modifying its contents.
+The seven-page PDF is the PDF eXpress-validated submission copy, not an IEEE Xplore version of record. It is published here without modifying its contents.
 
 ### Overview
 
